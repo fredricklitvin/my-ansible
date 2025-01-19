@@ -1,15 +1,10 @@
 #!/usr/bin/env bash
 # ------------------------------------------------------------------------
-# Simple bash script used to bootstrap ansible
+# Simple bash script used to install ansible for aws
 #
 # The following distros are supported: 
-#   - Fedora 20 and greater
-#   - CentOS 7
-#   - Ubuntu 16.04, 17.10, 18.04
-#
-# Brent WG
-# 2018-02-27
-# 2018-03-27
+#   - CentOS
+#   - Ubuntu
 # ------------------------------------------------------------------------
 
 # ----------------
@@ -46,17 +41,17 @@ echo "Getting OS version..."
 # ---------------
 echo ""
 echo "Installing Ansible for: $ID_LIKE..."
-## Deal with Fedora (version 20 and greater)
+## Deal with Fedora
 if [ "$ID_LIKE" == "fedora" ]; then
   ## Use dnf > 21
   if [ $VERSION_ID -gt 21 ]; then
     echo "Using: sudo dnf install -y ansible"
     sudo dnf update
     sudo dnf install -y python3
-    sudo dnf install -y python3-pip
+    sudo dnf install -y python3-pip3
     sudo dnf install -y ansible
     ansible-galaxy collection install amazon.aws
-    pip install boto boto3
+    pip3 install boto boto3 botocore
     
   ## Use yum for 20 - 21
   elif [ $VERSION_ID -eq 20 ] || [ $VERSION_ID -eq 21 ]; then
@@ -64,24 +59,24 @@ if [ "$ID_LIKE" == "fedora" ]; then
     sudo yum update
     sudo yum -y install python3
     sudo yum -y install ansible
-    sudo yum install -y python3-pip
+    sudo yum install -y python3-pip3
     ansible-galaxy collection install amazon.aws
-    pip install boto boto3
+    pip3 install boto boto3 botocore
   else
     error_exit 
   fi
 fi
 
-## Deal with CentOS 7
+## Deal with CentOS
 if [ "$ID_LIKE" == "centos" ]; then
     echo "Installing EPEL and Ansible"
     sudo yum update
     sudo yum install -y epel-release
     sudo yum install -y ansible
     sudo yum -y install python3
-    sudo yum install -y python3-pip
+    sudo yum install -y python3-pip3
     ansible-galaxy collection install amazon.aws
-    pip install boto boto3
+    pip install boto boto3 botocore
   else
     error_exit
 fi
