@@ -1,0 +1,48 @@
+#dynamicly created an inventory based on your aws instances
+plugin: amazon.aws.aws_ec2
+
+#choose your region
+regions:
+  - us-east-1
+
+#put your key here watch out to not share online
+#aws_access_key: 123
+#aws_secret_key: 12345
+
+#use a var from ~/.bashrc
+aws_access_key: "{{ lookup('env', 'AWS_ACCESS_KEY_ID') }}"
+aws_secret_key: "{{ lookup('env', 'AWS_SECRET_ACCESS_KEY') }}"
+
+#choose how to filter your instances
+filters:
+  
+  #filters based on the tag Role for example web
+  #tag:Role:
+    #- web
+  
+  #filters based on the image of the chosen instance
+  #image-id:
+    #- Amazon Linux 2023 AMI 2023.6.20250115.0 x86_64 HVM kernel-6.1
+  
+  #filters based on the instance state
+  instance-state-name:
+    - running
+  
+  #filters based on the security group id 
+  #instance.group-id:
+    #- sg-080a8519a0755b30f
+  
+  #filters based on the chosen key-name
+  #key-name:
+    #- fredrick_key
+  
+  #filters based on the vpc id
+  #network-interface.vpc-id:
+    #- vpc-00cad85233f911d40
+
+#Add hosts to group based on the values of a variable.
+keyed_groups:
+    #The key from input dictionary used to generate groups.
+  - key: tags
+    #A keyed group name will start with this prefix.
+    prefix: tag
